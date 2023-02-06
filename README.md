@@ -1,2 +1,5 @@
 # Game of Nim
 A mathematical game of strategy in which two players take turns subtracting numbers from a random range. On each turn, a player must remove a range of numbers between 1 and 3 inclusively, once the random game range is 0 or less than 0, the other player wins
+
+# The Standard Game
+The code implements a game of nim. It starts by printing a random number within the range of 20 to 30 as the game range. The user is then asked to input a number between 1 to 3, and this input is subtracted from the game range to get a new game range. If the new game range is greater than 0, the computer's turn starts. The computer's turn involves selecting a number between 1 and 3, which is then subtracted from the game range to get a new game range. The computer's input is determined using a series of if-elif conditions. If the game range becomes less than or equal to 0, the user wins. If the user's input is less than or equal to 0, the user loses. If the game range becomes less than 1, the user also loses. If the user inputs an invalid value, the code throws an exception, and the user is asked to try again.
