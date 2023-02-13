@@ -32,7 +32,7 @@ def choose_action(state, epsilon):
 
 
 print("Game range is {}".format(game_range))
-num_plays = 0
+num_plays = 1
 while is_continuing:
     try:
         user_input = int(input("Select a number between 1-3: "))
@@ -64,20 +64,20 @@ while is_continuing:
                 user_score =+ reward
                 print("YOU WIN")
                 print("-------------------")
-                rematch = input("Do you want to rematch? (Y/N)")
+                rematch = input("Do you want to rematch (Y/N)? ")
                 print("Number of plays: {}" .format(num_plays))
                 print("-------------------")
-                if rematch == "Y" or "y" or "yes" or "Yes":
-                    game_range = random.randint(40,60)
-                    num_plays=+1
-                    is_continuing = True
-                elif rematch == "N" or 'n' or 'no' or "No":
-                    is_continuing = False
+                if rematch in ['Y', 'y', 'yes', 'Yes']:
+                  game_range = random.randint(40,60)
+                  num_plays =+ 1
+                  is_continuing = True
+                elif rematch in ['N','n', 'no', 'No']:
+                    # is_continuing = False
                     print("YOU WIN")
                     print("Number of plays: {}" .format(num_plays))
                     print("Player: {} \t\t Computer: {}".format(user_score, computer_score))
-                    break
-                    # is_continuing = False
+                    # break
+                    is_continuing = False
                 
             else:
                 reward = -1
@@ -88,37 +88,36 @@ while is_continuing:
             print("YOU LOSE")
             reward = -1
             print("-------------------")
-            rematch = input("Do you want to rematch? (Y/N)")
+            rematch = input("Do you want to rematch (Y/N)? ")
             print("Number of plays: {}" .format(num_plays))
             print("-------------------")
-            if rematch == "Y" or "y" or "yes" or "Yes":
+            if rematch in ['Y', 'y', 'yes', 'Yes']:
                 game_range = random.randint(40,60)
-                num_plays=+1
+                num_plays =+ 1
                 is_continuing = True
-            elif rematch == "N" or 'n' or 'no' or "No":
-                is_continuing = False
+            elif rematch in ['N','n', 'no', 'No']:
+                
                 print("YOU WIN")
                 print("Number of plays: {}" .format(num_plays))
                 print("Player: {} \t\t Computer: {}".format(user_score, computer_score))
-                break
+                is_continuing = False
                 
         elif game_range < 1:
             computer_score =+ reward
             print("YOU LOSE")
             reward = -1
             print("-------------------")
-            rematch = input("Do you want to rematch? (Y/N)")
+            rematch = input("Do you want to rematch (Y/N)? ")
             print("Number of plays: {}" .format(num_plays))
             print("-------------------")
-            if rematch == "Y" or "y" or "yes" or "Yes":
+            if rematch in ['Y', 'y', 'yes', 'Yes']:
                 game_range = random.randint(40,60)
-                num_plays=+1
+                num_plays =+ 1
                 is_continuing = True
-            elif rematch == "N" or 'n' or 'no' or "No":
-                is_continuing = False
+            elif rematch in ['N','n', 'no', 'No']:
                 print("YOU WIN")
                 print("Number of plays: {}" .format(num_plays))
                 print("Player: {} \t\t Computer: {}".format(user_score, computer_score))
-                break
+                is_continuing = False
     except ValueError as ve:
         print(ve)
