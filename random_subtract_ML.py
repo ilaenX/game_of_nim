@@ -18,8 +18,8 @@ user_score = 0
 computer_score = 0
 
 # Reinforcement learning variables
-alpha = 3 # learning rate
-epsilon = 2 # exploration rate
+alpha = 0.8 # learning rate
+epsilon = 1 # exploration rate
 Q = np.zeros((100, 4)) # state-action value table
 
 def choose_action(state, epsilon):
