@@ -16,9 +16,10 @@ selection_range = range(1,4)
 is_continuing = True
 user_score = 0
 computer_score = 0
+reward = 0
 
 # Reinforcement learning variables
-alpha = 0.8 # learning rate
+alpha = 0.2 # learning rate
 epsilon = 1 # exploration rate
 Q = np.zeros((100, 4)) # state-action value table
 
@@ -30,9 +31,31 @@ def choose_action(state, epsilon):
         # Choose action with highest value in Q table
         return np.argmax(Q[state, :])
 
+def handle_rematch(num_plays, user_score, computer_score):
+    print("-------------------")
+    rematch = input("Do you want to rematch (Y/N)? ")
+    print("Number of plays: {}" .format(num_plays))
+    print("-------------------")
+    if rematch in ['Y', 'y', 'yes', 'Yes']:
+        game_range = random.randint(40,60)
+        num_plays += 1
+        is_continuing = True
+    elif rematch.isnumeric():
+        raise ValueError("Error: Input either Y/N")
+    elif rematch in ['N','n', 'no', 'No']:
+        print("GAME OVER")
+        if user_score > computer_score:
+            print("YOU WIN")
+        else:
+            print("YOU LOOSE")
+        print("Number of plays: {}" .format(num_plays))
+        print("Player: {} \tVS\t Computer: {}".format(user_score, computer_score))
+        is_continuing = False
+    return game_range, num_plays, is_continuing
 
 print("Game range is {}".format(game_range))
 num_plays = 1
+
 while is_continuing:
     try:
         user_input = int(input("Select a number between 1-3: "))
@@ -60,64 +83,26 @@ while is_continuing:
             print("New Game range is {}".format(game_range))
             print("_______________________________________________________")
             if game_range <= 0:
-                reward =+ 1
-                user_score =+ reward
-                print("YOU WIN")
-                print("-------------------")
-                rematch = input("Do you want to rematch (Y/N)? ")
-                print("Number of plays: {}" .format(num_plays))
-                print("-------------------")
-                if rematch in ['Y', 'y', 'yes', 'Yes']:
-                  game_range = random.randint(40,60)
-                  num_plays =+ 1
-                  is_continuing = True
-                elif rematch in ['N','n', 'no', 'No']:
-                    # is_continuing = False
+                if user_input + computer_input == 4:
+                    reward += 1
+                    user_score += 1
                     print("YOU WIN")
-                    print("Number of plays: {}" .format(num_plays))
-                    print("Player: {} \t\t Computer: {}".format(user_score, computer_score))
-                    # break
-                    is_continuing = False
-                
+                else:
+                    reward -= 1
+                    computer_score += 1
+                    print("YOU LOSE")
+                game_range, num_plays, is_continuing = handle_rematch(num_plays, user_score, computer_score)
             else:
-                reward = -1
-            # Update Q table
-            Q[game_range + user_input + computer_input, computer_input] = (1 - alpha) * Q[game_range + user_input + computer_input, computer_input] + alpha * (reward + np.max(Q[game_range, :]))
+                reward -= 1
+                # Update Q table
+                Q[game_range + user_input + computer_input, computer_input] = (1 - alpha) * Q[game_range + user_input + computer_input, computer_input] + alpha * (reward + np.max(Q[game_range, :]))
         elif user_input <= 0:
-            computer_score =+ reward
             print("YOU LOSE")
-            reward = -1
-            print("-------------------")
-            rematch = input("Do you want to rematch (Y/N)? ")
-            print("Number of plays: {}" .format(num_plays))
-            print("-------------------")
-            if rematch in ['Y', 'y', 'yes', 'Yes']:
-                game_range = random.randint(40,60)
-                num_plays =+ 1
-                is_continuing = True
-            elif rematch in ['N','n', 'no', 'No']:
-                
-                print("YOU WIN")
-                print("Number of plays: {}" .format(num_plays))
-                print("Player: {} \t\t Computer: {}".format(user_score, computer_score))
-                is_continuing = False
-                
+            computer_score+=1
+            game_range, num_plays, is_continuing = handle_rematch(num_plays, user_score, computer_score)
         elif game_range < 1:
-            computer_score =+ reward
             print("YOU LOSE")
-            reward = -1
-            print("-------------------")
-            rematch = input("Do you want to rematch (Y/N)? ")
-            print("Number of plays: {}" .format(num_plays))
-            print("-------------------")
-            if rematch in ['Y', 'y', 'yes', 'Yes']:
-                game_range = random.randint(40,60)
-                num_plays =+ 1
-                is_continuing = True
-            elif rematch in ['N','n', 'no', 'No']:
-                print("YOU WIN")
-                print("Number of plays: {}" .format(num_plays))
-                print("Player: {} \t\t Computer: {}".format(user_score, computer_score))
-                is_continuing = False
+            computer_score += 1
+            game_range, num_plays, is_continuing = handle_rematch(num_plays, user_score, computer_score)
     except ValueError as ve:
         print(ve)
